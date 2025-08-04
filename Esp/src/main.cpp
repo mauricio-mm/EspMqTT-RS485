@@ -2,16 +2,12 @@
 
 #include <WiFi.h>
 #include <PubSubClient.h>
-#include <Adafruit_Sensor.h>
-#include <DHT.h>
 #include "FS.h"
 #include "SPIFFS.h"
 #include "utils.h"
 
 WiFiClient espClient;
 PubSubClient MQTT(espClient);
-DHT dht(DHTPIN, DHTTYPE);
-Servo servo;
 
 static long long tempo=0;
 
@@ -24,17 +20,6 @@ void setup()
     WIFIConnect(&espClient);
     MQTT.setServer(mqtt_broker, mqtt_port);   
     MQTT.setCallback(callback);
-
-    //LED CONF
-    pinMode(LEDPIN, OUTPUT);
-    digitalWrite(LEDPIN, HIGH);
-
-    //DHT CONF
-    dht.begin();
-    pinMode(DHTPIN, INPUT);
-
-    //SERVO CONF
-    servo.attach(SERVOPIN);
 } 
 
 void loop() 
@@ -47,7 +32,7 @@ void loop()
   if(millis() > pooling+5000)
   {
     pooling = millis();
-    publish_data(&MQTT, topic_dht, String(dht.readTemperature()) + ':' +String(dht.readHumidity()));
+    publish_data(&MQTT, topic_sensor, "Teste\n");
   }  
 
   MQTT.loop();

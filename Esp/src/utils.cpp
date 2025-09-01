@@ -61,7 +61,7 @@ void printHexByte(unsigned char b)
   Serial.print(' ');
 }
 
-void calculateCRC(unsigned char *frame, int tamanho, int *crc_saida) {
+void calculateCRC(unsigned char *frame, int tamanho,unsigned char *crc_saida) {
   unsigned int crc = 0xFFFF;            // Initialize CRC to 0xFFFF
   for (int n = 0; n < tamanho; n++) {
     crc ^= frame[n];                    // XOR the frame byte with the CRC

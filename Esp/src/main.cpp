@@ -17,7 +17,7 @@ const char* mqtt_broker = "broker.emqx.io";
 const int mqtt_port = 1883;
 
 // half second wait for a reply
-int TIMEOUT = 500;
+int TIMEOUT = 1500;
 
 // Dado a ser transmitido
 unsigned char msg_tx[8] = {0x01, 0x04, 0x00, 0x01, 0x00, 0x02, 0x00, 0x00};
@@ -38,10 +38,7 @@ void setup()
     msg_tx[6] = crc_saida[0];
     msg_tx[7] = crc_saida[1];
 
-    // Serial1 será usada com o adaptador MAX485
     Serial1.begin(9600, SERIAL_8N1, 16, 17);
-
-    // Pino que fica alternando entre transmitir ou receber
     pinMode(MAX485_DE_RE, OUTPUT);
     digitalWrite(MAX485_DE_RE, LOW);
     delay(1000);
@@ -54,24 +51,15 @@ void loop()
   
   if(!MQTT.connected()) MQTTConnect(&MQTT);
   if(WiFi.status() != WL_CONNECTED) WIFIConnect(&espClient);
-  
-  if(millis() > pooling+5000)
-  {
-    pooling = millis();
-    publish_data(&MQTT, topic_sensor, "Teste\n");
-  }  
-
-  MQTT.loop();
 
   uint32_t startTime = 0;
   int j = 0;
 
-  // Imprimindo na Serial0 a mensagem que vai ser enviada ao slave.
   Serial.print("TX: ");
   printHexMessage(msg_tx, sizeof(msg_tx) );
 
   digitalWrite(MAX485_DE_RE, HIGH);
-  delay(10);
+  delay(2);
 
   Serial1.write(msg_tx, sizeof(msg_tx) );
   Serial1.flush();
@@ -89,8 +77,28 @@ void loop()
       }
     } 
 
-    for(j=1; j<10; j++)
+    for(j=0; j<10; j++)
       printHexByte(msg_rx[j]);
+
+    if(millis() > pooling+5000)
+    {
+    if (j >= 7) {
+        uint16_t high = (msg_rx[3] << 8) | msg_rx[4];
+        uint16_t low  = (msg_rx[5] << 8) | msg_rx[6];
+
+        char payload[64];
+        snprintf(payload, sizeof(payload), "{\"high\": %u, \"low\": %u}", high, low);
+
+        Serial.print("Publicando no MQTT: ");
+        Serial.println(payload);
+
+        publish_data(&MQTT, topic_sensor, payload);
+    } else {
+        Serial.println("Dados incompletos, não publicando.");
+    }
+    }  
+
+    MQTT.loop();
 
     Serial.println();
     delay(2000);    

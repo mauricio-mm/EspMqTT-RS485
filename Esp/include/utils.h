@@ -24,6 +24,6 @@ void callback(char *topic, byte *payload, unsigned int length);
 
 void printHexMessage(unsigned char values[], int tamanho);
 void printHexByte(unsigned char b);
-void calculateCRC(unsigned char *frame, int tamanho, int *crc_saida);
+void calculateCRC(unsigned char *frame, int tamanho,unsigned char *crc_saida);
 
 #endif

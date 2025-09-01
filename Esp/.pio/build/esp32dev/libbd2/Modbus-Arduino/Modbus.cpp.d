@@ -1,6 +1,6 @@
-.pio/build/esp32dev/lib370/PubSubClient/PubSubClient.cpp.o: \
- .pio/libdeps/esp32dev/PubSubClient/src/PubSubClient.cpp \
- .pio/libdeps/esp32dev/PubSubClient/src/PubSubClient.h \
+.pio/build/esp32dev/libbd2/Modbus-Arduino/Modbus.cpp.o: \
+ .pio/libdeps/esp32dev/Modbus-Arduino/src/Modbus.cpp \
+ .pio/libdeps/esp32dev/Modbus-Arduino/src/Modbus.h \
  C:/Users/mauricio.martins/.platformio/packages/framework-arduinoespressif32/cores/esp32/Arduino.h \
  C:/Users/mauricio.martins/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp_arduino_version.h \
  C:/Users/mauricio.martins/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include/freertos/FreeRTOS.h \
@@ -134,5 +134,4 @@
  C:/Users/mauricio.martins/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/spi_flash/include/esp_spi_flash_counters.h \
  C:/Users/mauricio.martins/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/esp_hw_support/include/soc/esp32/spiram.h \
  C:/Users/mauricio.martins/.platformio/packages/framework-arduinoespressif32/cores/esp32/io_pin_remap.h \
- C:/Users/mauricio.martins/.platformio/packages/framework-arduinoespressif32/cores/esp32/Arduino.h \
- C:/Users/mauricio.martins/.platformio/packages/framework-arduinoespressif32/cores/esp32/Client.h
+ C:/Users/mauricio.martins/.platformio/packages/framework-arduinoespressif32/cores/esp32/Arduino.h

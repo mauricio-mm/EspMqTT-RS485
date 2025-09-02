@@ -8,7 +8,7 @@ janela = uic.loadUi("interface.ui")  # Certifique-se que o arquivo existe
 client_id   = "py_iot"
 broker      = 'broker.emqx.io'
 port        = 1883
-topic_sensor = "lab318/topic_sensor"
+topic_sensor = "lab318/sensor"
 
 def timer():
     timer = QtCore.QTimer()
@@ -23,8 +23,8 @@ def sensor_message(message):
 
         if high is not None and low is not None:
             print(f"High: {high}, Low: {low}")
-            janela.lcdNumber.display(high)
-            janela.lcdNumber_2.display(low)
+            janela.lcdNumber.display(high/10)
+            janela.lcdNumber_2.display(low/10)
         else:
             print("Dados incompletos no payload MQTT")
 
@@ -38,26 +38,25 @@ def on_message(client, userdata, message):
     if message.topic == topic_sensor:
         sensor_message(message)
 
-def connect_mqtt(client_id, broker, port):
-    client = mqtt_client.Client(client_id=client_id)
+def connect_mqtt():
+    client = mqtt_client.Client(client_id)
     client.on_message = on_message
     client.connect(broker, port)
     print("Cliente conectado ao Broker MQTT")
     return client
 
-def subscribe(client, topic):
-    client.subscribe(topic)
+def subscribe(client):
+    client.subscribe(topic_sensor)
 
 def run():
-    client = connect_mqtt(client_id, broker, port)
-    subscribe(client, topic_sensor)
-    client.loop_start()
-
+    client = connect_mqtt()
+    subscribe(client)
+    client.loop_start() 
     timer()
     janela.show()
     app.exec_()
-
     client.loop_stop()
+
 
 if __name__ == '__main__':
     run()

@@ -87,11 +87,7 @@ void loop()
         uint16_t low  = (msg_rx[5] << 8) | msg_rx[6];
 
         char payload[64];
-        snprintf(payload, sizeof(payload), "{\"high\": %u, \"low\": %u}", high, low);
-
-        Serial.print("Publicando no MQTT: ");
-        Serial.println(payload);
-
+        snprintf(payload, sizeof(payload), "{\"high\": %u, \"low\": %u}", high, low);        
         publish_data(&MQTT, topic_sensor, payload);
     } else {
         Serial.println("Dados incompletos, não publicando.");
